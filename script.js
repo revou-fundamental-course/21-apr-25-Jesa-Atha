@@ -1,28 +1,47 @@
-function konversiSuhu() {
-    const suhu = parseFloat(document.getElementById('inputSuhu').value);
-    const satuan = document.getElementById('inputSatuan').value;
-    let hasil = "";
+let celsiusToFahrenheit = true;
 
-    if (isNaN(suhu)) {
-        hasil = "Masukkan angka yang valid!";
-    } else {
-        if (satuan === "celsius") {
-            hasil = `
-                Fahrenheit: ${(suhu * 9/5 + 32).toFixed(2)} °F<br>
-                Kelvin: ${(suhu + 273.15).toFixed(2)} K
-            `;
-        } else if (satuan === "fahrenheit") {
-            hasil = `
-                Celsius: ${((suhu - 32) * 5/9).toFixed(2)} °C<br>
-                Kelvin: ${(((suhu - 32) * 5/9) + 273.15).toFixed(2)} K
-            `;
-        } else if (satuan === "kelvin") {
-            hasil = `
-                Celsius: ${(suhu - 273.15).toFixed(2)} °C<br>
-                Fahrenheit: ${((suhu - 273.15) * 9/5 + 32).toFixed(2)} °F
-            `;
-        }
+function konversi() {
+    const input = parseFloat(document.getElementById('inputSuhu').value);
+    const hasil = document.getElementById('hasil');
+    const kalkulasi = document.getElementById('kalkulasi');
+
+    if (isNaN(input)) {
+        hasil.value = "";
+        kalkulasi.value = "Masukkan angka yang valid.";
+        return;
     }
 
-    document.getElementById('hasil').innerHTML = hasil;
+    let output, rumus;
+    if (celsiusToFahrenheit) {
+        output = (input * 9/5) + 32;
+        rumus = `${input}°C * (9/5) + 32 = ${output.toFixed(2)}°F`;
+    } else {
+        output = (input - 32) * 5/9;
+        rumus = `(${input}°F - 32) * (5/9) = ${output.toFixed(2)}°C`;
+    }
+
+    hasil.value = output.toFixed(2);
+    kalkulasi.value = rumus;
+}
+
+function reset() {
+    document.getElementById('inputSuhu').value = '';
+    document.getElementById('hasil').value = '';
+    document.getElementById('kalkulasi').value = '';
+}
+
+function reverse() {
+    celsiusToFahrenheit = !celsiusToFahrenheit;
+
+    // Ganti semua label dan teks
+    document.getElementById('label-input').textContent = celsiusToFahrenheit ? "Celsius (°C)" : "Fahrenheit (°F)";
+    document.getElementById('label-output').textContent = celsiusToFahrenheit ? "Fahrenheit (°F)" : "Celsius (°C)";
+    document.getElementById('inputLabel').textContent = celsiusToFahrenheit ? "Celsius (°C):" : "Fahrenheit (°F):";
+    document.getElementById('outputLabel').textContent = celsiusToFahrenheit ? "Fahrenheit (°F):" : "Celsius (°C):";
+    document.getElementById('teks-cara').textContent = celsiusToFahrenheit ? "Celsius (°C)" : "Fahrenheit (°F)";
+    document.getElementById('teks-ke').textContent = celsiusToFahrenheit ? "Fahrenheit (°F)" : "Celsius (°C)";
+    document.getElementById('satuan-input').textContent = celsiusToFahrenheit ? "Celsius (°C)" : "Fahrenheit (°F)";
+    document.getElementById('satuan-output').textContent = celsiusToFahrenheit ? "Fahrenheit (°F)" : "Celsius (°C)";
+
+    reset();
 }
